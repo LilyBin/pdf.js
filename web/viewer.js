@@ -2274,3 +2274,12 @@ window.addEventListener('afterprint', function afterPrint(evt) {
     window.requestAnimationFrame(resolve);
   });
 })();
+
+window.addEventListener("message", receiveMessage, false);
+
+function receiveMessage(event) {
+  if (event.origin !== document.location.origin) return;
+  var obj = event.data;
+  PDFViewerApplication.id = obj.id;
+  PDFViewerApplication.open(obj.url);
+}
