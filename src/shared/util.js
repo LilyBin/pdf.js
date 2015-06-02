@@ -321,6 +321,7 @@ function isValidUrl(url, allowRelative) {
   }
   protocol = protocol[0].toLowerCase();
   switch (protocol) {
+    case 'textedit':
     case 'http':
     case 'https':
     case 'ftp':
