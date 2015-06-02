@@ -993,6 +993,20 @@ var PDFViewerApplication = {
     // outline depends on pagesRefMap
     var promises = [pagesPromise, this.animationStartedPromise];
     Promise.all(promises).then(function() {
+      function linenoClickListner(event) {
+        event.preventDefault();
+        var href = this.getAttribute('href');
+        var splitted = href.split(':');
+        postToParent('scroll', {
+          line: +splitted[2],
+          char: +splitted[3],
+          column: +splitted[4]
+        });
+      }
+      var linenos = document.querySelectorAll('a[href^=textedit]');
+      for (var i = 0; i < linenos.length; i++) {
+        linenos[i].addEventListener('click', linenoClickListner);
+      }
       postToParent('loaded', { success: true });
       pdfDocument.getOutline().then(function(outline) {
         var container = document.getElementById('outlineView');
