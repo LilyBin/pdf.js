@@ -207,6 +207,7 @@ var PDFViewerApplication = {
       openFile: document.getElementById('secondaryOpenFile'),
       print: document.getElementById('secondaryPrint'),
       download: document.getElementById('secondaryDownload'),
+      midi: document.getElementById('secondaryMidi'),
       viewBookmark: document.getElementById('secondaryViewBookmark'),
       firstPage: document.getElementById('firstPage'),
       lastPage: document.getElementById('lastPage'),
@@ -677,6 +678,26 @@ var PDFViewerApplication = {
       },
       downloadByUrl // Error occurred try downloading with just the url.
     ).then(null, downloadByUrl);
+  },
+
+  midi: function midiDownload() {
+    if (!this.id) return;
+    if (!this.midiAvailable) {
+      return postToParent('error', {
+        text: 'No MIDI generated during compilation. You should\n' +
+              'add `\\midi{}` to the `\\score{}` block.'
+      });
+    }
+    var url = 'https://s3-us-west-2.amazonaws.com/lilybin-scores/' + this.id + '.midi';
+    var downloadManager = new DownloadManager();
+    downloadManager.onerror = function (err) {
+      // This error won't really be helpful because it's likely the
+      // fallback won't work either (or is already open).
+      postToParent('error', {
+        text: 'MIDI failed to download.'
+      });
+    };
+    downloadManager.downloadUrl(url, 'score.midi');
   },
 
   fallback: function pdfViewFallback(featureId) {
@@ -1618,6 +1639,9 @@ function webViewerInitialized() {
   document.getElementById('download').addEventListener('click',
     SecondaryToolbar.downloadClick.bind(SecondaryToolbar));
 
+  document.getElementById('midi').addEventListener('click',
+    SecondaryToolbar.midiClick.bind(SecondaryToolbar));
+
 //#if (FIREFOX || MOZCENTRAL)
 //PDFViewerApplication.setTitleUsingUrl(file);
 //PDFViewerApplication.initPassiveLoading();
@@ -2287,6 +2311,12 @@ function receiveMessage(event) {
   if (event.origin !== document.location.origin) return;
   var obj = event.data;
   PDFViewerApplication.id = obj.id;
+  PDFViewerApplication.midiAvailable = obj.midi;
+  var midiEls = document.getElementsByClassName('midi');
+  var func = obj.midi ? 'remove' : 'add';
+  for (var i = 0; i < midiEls.length; i++) {
+    midiEls[i].classList[func]('disabled');
+  }
   PDFViewerApplication.open(obj.url);
 }
 

@@ -889,6 +889,11 @@ html[dir='rtl'] #findNext {
   content: '\e166';
 }
 
+.toolbarButton.midi::before,
+.secondaryToolbarButton.midi::before {
+  content: '\e072';
+}
+
 #viewThumbnail.toolbarButton::before {
   content: '\e010';
 }

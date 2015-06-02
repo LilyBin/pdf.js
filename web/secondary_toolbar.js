@@ -31,6 +31,7 @@ var SecondaryToolbar = {
     this.openFile = options.openFile;
     this.print = options.print;
     this.download = options.download;
+    this.midi = options.midi;
     this.viewBookmark = options.viewBookmark;
     this.firstPage = options.firstPage;
     this.lastPage = options.lastPage;
@@ -49,6 +50,7 @@ var SecondaryToolbar = {
       { element: this.openFile, handler: this.openFileClick },
       { element: this.print, handler: this.printClick },
       { element: this.download, handler: this.downloadClick },
+      { element: this.midi, handler: this.midiClick },
       { element: this.viewBookmark, handler: this.viewBookmarkClick },
       { element: this.firstPage, handler: this.firstPageClick },
       { element: this.lastPage, handler: this.lastPageClick },
@@ -84,6 +86,11 @@ var SecondaryToolbar = {
 
   downloadClick: function secondaryToolbarDownloadClick(evt) {
     PDFViewerApplication.download();
+    this.close();
+  },
+
+  midiClick: function secondaryToolbarMidiClick(evt) {
+    PDFViewerApplication.midi();
     this.close();
   },
 
