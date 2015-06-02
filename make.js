@@ -402,7 +402,7 @@ target.locale = function() {
   mkdir('-p', VIEWER_LOCALE_OUTPUT);
 
   var subfolders = ls(LOCALE_SRC_DIR);
-  subfolders.sort();
+  subfolders = [ 'en-US' ];
   var metadataContent = '';
   var chromeManifestContent = '';
   var viewerOutput = '';
