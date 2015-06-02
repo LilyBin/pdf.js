@@ -613,23 +613,28 @@ var PDFViewerApplication = {
         var loadingErrorMessage = mozL10n.get('loading_error', null,
           'An error occurred while loading the PDF.');
 
+        var errStr = 'loading_error';
         if (exception instanceof PDFJS.InvalidPDFException) {
           // change error message also for other builds
           loadingErrorMessage = mozL10n.get('invalid_file_error', null,
                                             'Invalid or corrupted PDF file.');
+          errStr = 'invalid_file_error';
         } else if (exception instanceof PDFJS.MissingPDFException) {
           // special message for missing PDF's
           loadingErrorMessage = mozL10n.get('missing_file_error', null,
                                             'Missing PDF file.');
+          errStr = 'missing_file_error';
         } else if (exception instanceof PDFJS.UnexpectedResponseException) {
           loadingErrorMessage = mozL10n.get('unexpected_response_error', null,
                                             'Unexpected server response.');
+          errStr = 'unexpected_response_error';
         }
 
         var moreInfo = {
           message: message
         };
         self.error(loadingErrorMessage, moreInfo);
+        postToParent('loaded', { sucess: false, errStr: errStr });
 
         throw new Error(loadingErrorMessage);
       }
@@ -946,6 +951,7 @@ var PDFViewerApplication = {
     // outline depends on pagesRefMap
     var promises = [pagesPromise, this.animationStartedPromise];
     Promise.all(promises).then(function() {
+      postToParent('loaded', { success: true });
       pdfDocument.getOutline().then(function(outline) {
         var container = document.getElementById('outlineView');
         self.outline = new PDFOutlineView({
@@ -2282,4 +2288,10 @@ function receiveMessage(event) {
   var obj = event.data;
   PDFViewerApplication.id = obj.id;
   PDFViewerApplication.open(obj.url);
+}
+
+function postToParent(type, msg) {
+  msg = msg || {};
+  msg.type = type;
+  parent.postMessage(msg, document.location.origin);
 }
