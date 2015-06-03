@@ -134,7 +134,6 @@ target.generic = function() {
       ['LICENSE', GENERIC_DIR],
       ['external/webL10n/l10n.js', GENERIC_DIR + '/web'],
       ['web/compatibility.js', GENERIC_DIR + '/web'],
-      ['web/compressed.tracemonkey-pldi-09.pdf', GENERIC_DIR + '/web'],
       ['external/bcmaps/*', GENERIC_DIR + '/web/cmaps/'],
       ['web/locale', GENERIC_DIR + '/web']
     ],
@@ -676,7 +675,6 @@ target.minified = function() {
     copy: [
       [COMMON_WEB_FILES, MINIFIED_DIR + '/web'],
       ['LICENSE', MINIFIED_DIR],
-      ['web/compressed.tracemonkey-pldi-09.pdf', MINIFIED_DIR + '/web'],
       ['external/bcmaps/*', MINIFIED_DIR + '/web/cmaps'],
       ['web/locale', MINIFIED_DIR + '/web']
     ],
