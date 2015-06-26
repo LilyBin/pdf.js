@@ -753,7 +753,7 @@ target.buildnumber = function() {
 
   echo('Extension build number: ' + BUILD_NUMBER);
 
-  VERSION = config.versionPrefix + BUILD_NUMBER;
+  VERSION = config.versionPrefix + BUILD_NUMBER + ' (LilyBin)';
 };
 
 //
