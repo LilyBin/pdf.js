@@ -957,6 +957,10 @@ html[dir="ltr"] .secondaryToolbarButton > span {
   content: '\e086';
 }
 
+.secondaryToolbarButton.compileLog::before {
+  content: '\e055';
+}
+
 .verticalToolbarSeparator {
   display: block;
   padding: 8px 0;

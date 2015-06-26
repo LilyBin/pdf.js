@@ -213,7 +213,8 @@ var PDFViewerApplication = {
       lastPage: document.getElementById('lastPage'),
       pageRotateCw: document.getElementById('pageRotateCw'),
       pageRotateCcw: document.getElementById('pageRotateCcw'),
-      documentPropertiesButton: document.getElementById('documentProperties')
+      documentPropertiesButton: document.getElementById('documentProperties'),
+      compileLog: document.getElementById('compileLog')
     });
 
     if (this.supportsFullscreen) {
@@ -698,6 +699,26 @@ var PDFViewerApplication = {
       });
     };
     downloadManager.downloadUrl(url, 'score.midi');
+  },
+
+  compileLogVisible: false,
+  compileLog: function compileLog() {
+    var button = document.getElementById('compileLog');
+    this.compileLogVisible = !this.compileLogVisible;
+    if (this.compileLogVisible) {
+      button.title =
+        mozL10n.get('hide_compile_log.title', null, 'Hide Compile Log');
+      button.firstElementChild.textContent =
+        mozL10n.get('hide_compile_log_label', null, 'Hide Compile Log');
+    } else {
+      button.title =
+        mozL10n.get('show_compile_log.title', null, 'Show Compile Log');
+      button.firstElementChild.textContent =
+        mozL10n.get('show_compile_log_label', null, 'Show Compile Log');
+    }
+    postToParent('log', {
+      visible: this.compileLogVisible
+    });
   },
 
   fallback: function pdfViewFallback(featureId) {
@@ -2310,6 +2331,20 @@ window.addEventListener("message", receiveMessage, false);
 function receiveMessage(event) {
   if (event.origin !== document.location.origin) return;
   var obj = event.data;
+  var logEl = document.getElementById('compileLog');
+  logEl.disabled = !!obj.error;
+  if (obj.error) {
+    logEl.title =
+      mozL10n.get('hide_compile_log.title', null, 'Hide Compile Log');
+    logEl.firstElementChild.textContent =
+      mozL10n.get('hide_compile_log_label', null, 'Hide Compile Log');
+    return;
+  }
+  logEl.title =
+    mozL10n.get('show_compile_log.title', null, 'Show Compile Log');
+  logEl.firstElementChild.textContent =
+    mozL10n.get('show_compile_log_label', null, 'Show Compile Log');
+  PDFViewerApplication.compileLogVisible = false;
   PDFViewerApplication.id = obj.id;
   PDFViewerApplication.midiAvailable = obj.midi;
   var midiEls = document.getElementsByClassName('midi');
