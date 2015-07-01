@@ -652,15 +652,10 @@ function cleanupCSSSource(file) {
 //
 // make minified
 // Builds the minified production viewer that should be compatible with most
-// modern HTML5 browsers. Requires Google Closure Compiler.
+// modern HTML5 browsers.
 //
 target.minified = function() {
-  var compilerPath = process.env['CLOSURE_COMPILER'];
-  if (!compilerPath) {
-    echo('### Closure Compiler is not set. Specify CLOSURE_COMPILER variable');
-    exit(1);
-  }
-
+  var UglifyJS = require("uglify-js");
   target.bundle({});
   target.locale();
 
@@ -703,22 +698,16 @@ target.minified = function() {
     MINIFIED_DIR + BUILD_DIR + 'pdf.js',
     MINIFIED_DIR + '/web/viewer.js'
   ];
-  var cmdPrefix = 'java -jar \"' + compilerPath + '\" ' +
-    '--language_in ECMASCRIPT5 ' +
-    '--warning_level QUIET ' +
-    '--compilation_level SIMPLE_OPTIMIZATIONS ';
 
   echo();
   echo('### Minifying js files');
 
-  exec(cmdPrefix + viewerFiles.map(function(s) {
-    return '--js \"' + s + '\"';
-  }).join(' ') +
-    ' --js_output_file \"' + MINIFIED_DIR + '/web/pdf.viewer.js\"');
-  exec(cmdPrefix + '--js \"' + MINIFIED_DIR + '/build/pdf.js' + '\" ' +
-    '--js_output_file \"' + MINIFIED_DIR + '/build/pdf.min.js' + '\"');
-  exec(cmdPrefix + '--js \"' + MINIFIED_DIR + '/build/pdf.worker.js' + '\" ' +
-    '--js_output_file \"' + MINIFIED_DIR + '/build/pdf.worker.min.js' + '\"');
+  UglifyJS.minify(viewerFiles).code
+    .to(MINIFIED_DIR + '/web/pdf.viewer.js');
+  UglifyJS.minify(MINIFIED_DIR + '/build/pdf.js').code
+    .to(MINIFIED_DIR + '/build/pdf.min.js');
+  UglifyJS.minify(MINIFIED_DIR + '/build/pdf.worker.js').code
+    .to(MINIFIED_DIR + '/build/pdf.worker.min.js');
 
   echo();
   echo('### Cleaning js files');
