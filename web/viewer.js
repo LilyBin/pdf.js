@@ -55,7 +55,6 @@ var mozL10n = document.mozL10n || document.webL10n;
 //#include preferences.js
 
 //#if !(FIREFOX || MOZCENTRAL)
-//#include mozPrintCallback_polyfill.js
 //#endif
 
 //#if GENERIC || CHROME
