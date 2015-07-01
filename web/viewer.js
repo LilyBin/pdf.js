@@ -778,7 +778,7 @@ var PDFViewerApplication = {
       }
     }
 
-//#if !(FIREFOX || MOZCENTRAL)
+//#if 0 && !(FIREFOX || MOZCENTRAL)
     var errorWrapper = document.getElementById('errorWrapper');
     errorWrapper.removeAttribute('hidden');
 
@@ -811,8 +811,7 @@ var PDFViewerApplication = {
     lessInfoButton.setAttribute('hidden', 'true');
     errorMoreInfo.value = moreInfoText;
 //#else
-//  console.error(message + '\n' + moreInfoText);
-//  this.fallback();
+//  postToParent('error', { text: message + '\n\n' + moreInfoText });
 //#endif
   },
 
