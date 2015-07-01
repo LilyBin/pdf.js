@@ -675,6 +675,7 @@ target.minified = function() {
     defines: defines,
     copy: [
       [COMMON_WEB_FILES, MINIFIED_DIR + '/web'],
+      ['LICENSE', MINIFIED_DIR],
       ['web/compressed.tracemonkey-pldi-09.pdf', MINIFIED_DIR + '/web'],
       ['external/bcmaps/*', MINIFIED_DIR + '/web/cmaps'],
       ['web/locale', MINIFIED_DIR + '/web']
