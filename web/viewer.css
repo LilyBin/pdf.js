@@ -836,7 +836,6 @@ html[dir='rtl'] #findNext {
 
 .toolbarButton::before,
 .secondaryToolbarButton::before {
-  position: absolute;
   display: inline-block;
   font-family: 'Glyphicons Halflings';
   font-style: normal;
@@ -844,12 +843,13 @@ html[dir='rtl'] #findNext {
   -webkit-font-smoothing: antialiased;
   font-size: 14px;
   color: #666;
-  top: 4px;
-  left: 7px;
+  text-align: center;
 }
 
 .secondaryToolbarButton::before {
+  position: absolute;
   left: 3px;
+  top: 5.5px;
 }
 
 .toolbarButton#sidebarToggle::before {
@@ -857,7 +857,7 @@ html[dir='rtl'] #findNext {
 }
 
 .toolbarButton#secondaryToolbarToggle::before {
-  content: '\e234';
+  content: '\e236';
 }
 
 .toolbarButton.findPrevious::before {
