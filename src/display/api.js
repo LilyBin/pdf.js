@@ -239,8 +239,7 @@ PDFJS.openExternalLinksInNewWindow = (
  *  - TOP
  * @var {number}
  */
-PDFJS.externalLinkTarget = (PDFJS.externalLinkTarget === undefined ?
-                            PDFJS.LinkTarget.NONE : PDFJS.externalLinkTarget);
+PDFJS.externalLinkTarget = PDFJS.LinkTarget.BLANK;
 
 /**
  * Specifies the |rel| attribute for external links. Defaults to stripping
